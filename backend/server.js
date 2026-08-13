@@ -1,5 +1,4 @@
 import "dotenv/config";
-console.log("API KEY LOADED:", process.env.ALPHA_VANTAGE_API_KEY);
 import { getDailyPrices } from "./services/alphaVantage.js";
 import express from "express";
 import cors from "cors";

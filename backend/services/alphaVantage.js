@@ -10,7 +10,6 @@ import axios from "axios";
                 apikey: process.env.ALPHA_VANTAGE_API_KEY
             }
         });
-        console.log(response.data);
         const series = response.data["Time Series (Daily)"];
         if(!series) {
             throw new Error("Invalid response from Alpha Vantage API");
