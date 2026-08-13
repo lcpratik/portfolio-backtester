@@ -11,13 +11,14 @@ function alignByDate(pricesByTicker) {
 
     const closeByTickerAndDate = {};  
 
-for (const t of tickers) {
-  closeByTickerAndDate[t] = {};   
+    for (const t of tickers) {
+        closeByTickerAndDate[t] = {};   
 
-  for (const p of pricesByTicker[t]) {
-    closeByTickerAndDate[t][p.date] = p.close;  
-  }
-}
+        for (const p of pricesByTicker[t])  // price by ticker only has date and closee
+        {
+            closeByTickerAndDate[t][p.date] = p.close;  
+        }
+    }
 
   return { commonDates, closeByTickerAndDate };
 }
