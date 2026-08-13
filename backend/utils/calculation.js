@@ -1,4 +1,4 @@
-function alignByDate(pricesByTicker) {
+export function alignByDate(pricesByTicker) {
     const tickers = Object.keys(pricesByTicker);
 
     const dateSets = tickers.map(
@@ -22,7 +22,7 @@ function alignByDate(pricesByTicker) {
     return { commonDates, closeByTickerAndDate };
 }
 
-function simulateBuyAndHold(pricesByTicker, allocations, startingAmount, startDate, endDate) {
+export function simulateBuyAndHold(pricesByTicker, allocations, startingAmount, startDate, endDate) {
     const { commonDates, closeByTickerAndDate } = alignByDate(pricesByTicker);
 
     const datesInRange = commonDates.filter(
@@ -46,5 +46,14 @@ function simulateBuyAndHold(pricesByTicker, allocations, startingAmount, startDa
         }
         series.push({ date, value: totalValue });
     }
-    return { series };
+    return series;
+}
+
+export function computeStats(series) {
+  const startValue = series[0].value;
+  const endValue = series[series.length - 1].value;
+
+  const totalReturnPct = /* your formula here, using startValue and endValue */;
+
+  return { totalReturnPct };
 }
