@@ -1,6 +1,6 @@
 import axios from "axios";
 
-async export function getDailyPrices(ticker) {
+ export async function getDailyPrices(ticker) {
     try {
         const response = await axios.get("https://www.alphavantage.co/query", {
             params: {
@@ -14,7 +14,12 @@ async export function getDailyPrices(ticker) {
         if(!series) {
             throw new Error("Invalid response from Alpha Vantage API");
         }
-        return series;
+        const prices = Object.entries(series).map(([date, data]) => ({
+            date,
+            close: parseFloat(data["4. close"]),
+        }));
+        prices.sort((a, b) => new Date(a.date) - new Date(b.date));
+        return prices;
     } catch (error) {
         console.error(error);
         throw error;    
