@@ -1,49 +1,50 @@
 function alignByDate(pricesByTicker) {
-  const tickers = Object.keys(pricesByTicker); 
+    const tickers = Object.keys(pricesByTicker);
 
-  const dateSets = tickers.map(
-    (t) => new Set(pricesByTicker[t].map((p) => p.date))
-  );
+    const dateSets = tickers.map(
+        (t) => new Set(pricesByTicker[t].map((p) => p.date))
+    );
 
-  const commonDates = pricesByTicker[tickers[0]]
-    .map((p) => p.date)
-    .filter((date) => dateSets.every((set) => set.has(date)));
+    const commonDates = pricesByTicker[tickers[0]]
+        .map((p) => p.date)
+        .filter((date) => dateSets.every((set) => set.has(date)));
 
-    const closeByTickerAndDate = {};  
+    const closeByTickerAndDate = {};
 
     for (const t of tickers) {
-        closeByTickerAndDate[t] = {};   
+        closeByTickerAndDate[t] = {};
 
-        for (const p of pricesByTicker[t])  
-        {
-            closeByTickerAndDate[t][p.date] = p.close;  
+        for (const p of pricesByTicker[t]) {
+            closeByTickerAndDate[t][p.date] = p.close;
         }
     }
 
-  return { commonDates, closeByTickerAndDate };
+    return { commonDates, closeByTickerAndDate };
 }
 
 function simulateBuyAndHold(pricesByTicker, allocations, startingAmount, startDate, endDate) {
-  const { commonDates, closeByTickerAndDate } = alignByDate(pricesByTicker);
+    const { commonDates, closeByTickerAndDate } = alignByDate(pricesByTicker);
 
-  const datesInRange = commonDates.filter(
-  (date) => date >= startDate && date <= endDate
+    const datesInRange = commonDates.filter(
+        (date) => date >= startDate && date <= endDate
     );
 
-  const firstdate = datesInRange[0];
+    const firstdate = datesInRange[0];
 
-   for(const ticker of Object.keys(allocations)) {
-        shares[ticker] = (startingAmount * allocations[ticker]) / closeByTickerAndDate[ticker][firstDate];
-   }
+    let shares = {};
+
+    for (const ticker of Object.keys(allocations)) {
+        shares[ticker] = (startingAmount * allocations[ticker]) / closeByTickerAndDate[ticker][firstdate];
+    }
 
     const series = [];  // created ONCE, before the outer loop — same rule as before
 
-for (const date of datesInRange) {
-  let totalValue = 0;
-  for (const ticker of Object.keys(allocations)) {
-    totalValue += shares[ticker] * closeByTickerAndDate[ticker][date];
-  }
-  series.push({ date, value: totalValue });
-}
-  return{series};
+    for (const date of datesInRange) {
+        let totalValue = 0;
+        for (const ticker of Object.keys(allocations)) {
+            totalValue += shares[ticker] * closeByTickerAndDate[ticker][date];
+        }
+        series.push({ date, value: totalValue });
+    }
+    return { series };
 }
