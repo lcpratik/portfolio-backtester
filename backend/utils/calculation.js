@@ -32,11 +32,18 @@ function simulateBuyAndHold(pricesByTicker, allocations, startingAmount, startDa
 
   const firstdate = datesInRange[0];
 
-  // step 3: for each ticker in `allocations`, compute how many shares were bought
-  //   shares[ticker] = (startingAmount * allocations[ticker]) / closeByTickerAndDate[ticker][firstDate]
+   for(const ticker of Object.keys(allocations)) {
+        shares[ticker] = (startingAmount * allocations[ticker]) / closeByTickerAndDate[ticker][firstDate];
+   }
 
-  // step 4: for each date in the filtered range, compute total portfolio value that day
-  //   value = sum over all tickers of (shares[ticker] * closeByTickerAndDate[ticker][date])
+    const series = [];  // created ONCE, before the outer loop — same rule as before
 
-  // return an array of { date, value } objects
+for (const date of datesInRange) {
+  let totalValue = 0;
+  for (const ticker of Object.keys(allocations)) {
+    totalValue += shares[ticker] * closeByTickerAndDate[ticker][date];
+  }
+  series.push({ date, value: totalValue });
+}
+  return{series};
 }
