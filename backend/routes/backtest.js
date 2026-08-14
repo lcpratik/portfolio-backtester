@@ -8,33 +8,23 @@ const BENCHMARK_TICKER = "SPY";
 router.post("/", async (req, res) => {
   try {
     const portfolioSeries = simulateBuyAndHold(pricesByTicker, allocations, startingAmount, startDate, endDate);
-
     const portfolioStats = computeStats(portfolioSeries);
-
-    for (const ticker in allocations) {
-      allocations[ticker] = allocations[ticker] / 100;
-    }
-
-    const tickers = Object.keys(allocations);
-    tickers.push(BENCHMARK_TICKER);
-
-    // step 3: use Promise.all + .map() to fetch prices for all of them at once
-    const pricePromises = tickers.map((ticker) => getDailyPrices(ticker, startDate, endDate));
-    const pricesArray = await Promise.all(pricePromises);
-
-    const pricesByTicker = {};
-    tickers.forEach((ticker, index) => {
-      pricesByTicker[ticker] = pricesArray[index];
+    const benchmarkSeries = simulateBuyAndHold(
+      { [BENCHMARK_TICKER]: pricesByTicker[BENCHMARK_TICKER] },
+      { [BENCHMARK_TICKER]: 1 },
+      startingAmount,
+      startDate,
+      endDate
+    );
+    const benchmarkStats = computeStats(benchmarkSeries);
+    res.json({
+      portfolio: { series: portfolioSeries, stats: portfolioStats },
+      benchmark: { series: benchmarkSeries, stats: benchmarkStats },
     });
-
-    const portfolioStats = await simulateBuyAndHold(pricesByTicker, allocations, startingAmount);
-
-    const benchmarkStats = await simulateBuyAndHold(pricesByTicker, { [BENCHMARK_TICKER]: 1 }, startingAmount);
-=
-    res.json({ portfolio: portfolioStats, benchmark: benchmarkStats });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to perform backtest" });
   }
 });
 
-export default router;
+    export default router;
