@@ -9,7 +9,6 @@ router.post("/", async (req, res) => {
   try {
     const { allocations, startingAmount, startDate, endDate } = req.body;
 
-    // Convert percentages (40) into decimals (0.4)
     for (const ticker in allocations) {
       allocations[ticker] = allocations[ticker] / 100;
     }
@@ -17,17 +16,16 @@ router.post("/", async (req, res) => {
     const tickers = Object.keys(allocations);
     const tickersToFetch = [...tickers, BENCHMARK_TICKER];
 
-    // Fetch prices for every ticker + the benchmark, all at once
     const pricePromises = tickersToFetch.map((ticker) => getDailyPrices(ticker));
     const pricesArray = await Promise.all(pricePromises);
 
-    // Rebuild into { TICKER: [...] } shape
+   
     const pricesByTicker = {};
     tickersToFetch.forEach((ticker, index) => {
       pricesByTicker[ticker] = pricesArray[index];
     });
 
-    // Portfolio: series -> stats
+  
     const portfolioSeries = simulateBuyAndHold(pricesByTicker, allocations, startingAmount, startDate, endDate);
     const portfolioStats = computeStats(portfolioSeries);
 
