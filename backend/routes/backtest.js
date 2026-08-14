@@ -5,6 +5,10 @@ import { simulateBuyAndHold, computeStats } from "../utils/calculation.js";
 const router = express.Router();
 const BENCHMARK_TICKER = "SPY";
 
+function wait(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 router.post("/", async (req, res) => {
   try {
     const { allocations, startingAmount, startDate, endDate } = req.body;
@@ -23,17 +27,16 @@ router.post("/", async (req, res) => {
     }
     tickersToFetch.push(BENCHMARK_TICKER);
 
-    // Fetch prices for everything at once
-    const pricePromises = tickersToFetch.map((ticker) => getDailyPrices(ticker));
-    const pricesArray = await Promise.all(pricePromises);
-
-    // Organize the results into { TICKER: [...] } shape
+    // Fetch prices ONE AT A TIME, waiting between each — respects Alpha
+    // Vantage's free-tier limit of 1 request per second
     const pricesByTicker = {};
-    for (let i = 0; i < tickersToFetch.length; i++) {
-      const ticker = tickersToFetch[i];
-      pricesByTicker[ticker] = pricesArray[i];
+    for (const ticker of tickersToFetch) {
+      const prices = await getDailyPrices(ticker);
+      pricesByTicker[ticker] = prices;
+      await wait(1200); // wait 1.2 seconds before the next request
     }
 
+    // Portfolio: run the simulation, then compute stats from the result
     const portfolioSeries = simulateBuyAndHold(
       pricesByTicker,
       allocations,
