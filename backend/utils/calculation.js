@@ -53,7 +53,9 @@ export function computeStats(series) {
   const startValue = series[0].value;
   const endValue = series[series.length - 1].value;
 
-  const totalReturnPct = /* your formula here, using startValue and endValue */;
+  const totalReturnPct = ((endValue - startValue) / startValue) * 100;
+  const years = (new Date(series[series.length - 1].date) - new Date(series[0].date)) / (1000 * 60 * 60 * 24 * 365.25);
+  const cagrPct = (Math.pow(endValue / startValue, 1 / years) - 1) * 100;
 
-  return { totalReturnPct };
+  return { totalReturnPct, cagrPct };
 }
