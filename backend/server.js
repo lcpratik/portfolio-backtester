@@ -1,5 +1,6 @@
 import "dotenv/config";
 import { getDailyPrices } from "./services/alphaVantage.js";
+import backtestRouter from "./routes/backtest.js";
 import express from "express";
 import cors from "cors";
 
@@ -8,6 +9,8 @@ const app = express(); // express is a function that returns an object that repr
 
 app.use(express.json());
 app.use(cors());
+
+app.use("/api/backtest", backtestRouter);
 
 app.get("/api/test-prices/:ticker", async (req, res) => {
   try {

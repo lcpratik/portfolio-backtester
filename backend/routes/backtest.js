@@ -1,6 +1,6 @@
 import express from "express";
 import { getDailyPrices } from "../services/alphaVantage.js";
-import { simulateBuyAndHold, computeStats } from "../utils/calculations.js";
+import { simulateBuyAndHold, computeStats } from "../utils/calculation.js";
 
 const router = express.Router();
 const BENCHMARK_TICKER = "SPY";
@@ -34,7 +34,6 @@ router.post("/", async (req, res) => {
       pricesByTicker[ticker] = pricesArray[i];
     }
 
-    // Portfolio: run the simulation, then compute stats from the result
     const portfolioSeries = simulateBuyAndHold(
       pricesByTicker,
       allocations,

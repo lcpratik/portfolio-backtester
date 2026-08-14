@@ -11,6 +11,7 @@ import axios from "axios";
             }
         });
         const series = response.data["Time Series (Daily)"];
+        console.log(response.data);
         if(!series) {
             throw new Error("Invalid response from Alpha Vantage API");
         }
