@@ -18,7 +18,7 @@ router.post("/", async (req, res) => {
       allocations[ticker] = allocations[ticker] / 100;
     }
 
-    // Build our list of tickers to fetch: portfolio tickers + the benchmark
+    // Build our list of tickers to fetch: portfolio tickers + the benchmark ticker (SPY)
     const tickers = Object.keys(allocations);
 
     const tickersToFetch = [];
