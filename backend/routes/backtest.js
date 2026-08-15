@@ -33,10 +33,10 @@ router.post("/", async (req, res) => {
     for (const ticker of tickersToFetch) {
       const prices = await getDailyPrices(ticker);
       pricesByTicker[ticker] = prices;
-      await wait(1200); // wait 1.2 seconds before the next request
+      await wait(1200); // wait 1.2seconds before the next request
     }
 
-    // Portfolio: run the simulation, then compute stats from the result
+    // Portfolio:run the simulation, then compute stats from the result
     const portfolioSeries = simulateBuyAndHold(
       pricesByTicker,
       allocations,
