@@ -79,10 +79,13 @@ async function runBacktest() {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      allocations: { VOO: 40, NVDA: 60 },
-      startingAmount: 10000,
-      startDate: "2026-06-01",
-      endDate: "2026-08-14",
+      allocations: tickers.reduce((acc, t) => {
+        acc[t.symbol] = t.allocation;
+        return acc;
+      }, {}),
+      startingAmount: startingAmount,
+      startDate: startDate,
+      endDate: endDate,
     }),
   });
 
