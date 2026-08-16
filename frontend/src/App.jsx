@@ -1,23 +1,35 @@
 import { useState } from 'react'
 
 function App() {
-  const [ticker, setTicker] = useState({ symbol: "VOO", allocation: 40 });
+  const [tickers, setTickers] = useState([
+    { symbol: "VOO", allocation: 40 },
+    { symbol: "NVDA", allocation: 60 },
+  ]);
 
   return (
     <div>
-      <p>{ticker.symbol}: {ticker.allocation}%</p>
-
-      <input
-        type="text"
-        value={ticker.symbol}
-        onChange={(e) => setTicker({ symbol: e.target.value, allocation: ticker.allocation })}
-      />
-
-      <input
-        type="number"
-        value={ticker.allocation}
-        onChange={(e) => setTicker({ symbol: ticker.symbol, allocation: e.target.value })}
-      />
+      {tickers.map((t, index) => (
+        <div key={index}>
+          <input
+            type="text"
+            value={t.symbol}
+            onChange={(e) => {
+              const updated = [...tickers];
+              updated[index] = { symbol: e.target.value, allocation: t.allocation };
+              setTickers(updated);
+            }}
+          />
+          <input
+            type="number"
+            value={t.allocation}
+            onChange={(e) => {
+              const updated = [...tickers];
+              updated[index] = { symbol: t.symbol, allocation: e.target.value };
+              setTickers(updated);
+            }}
+          />
+        </div>
+      ))}
     </div>
   )
 }
