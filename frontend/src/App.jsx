@@ -12,6 +12,7 @@ function App() {
   return (
     <div>
       <h1>Portfolio Backtester</h1>
+      <button onClick={runBacktest}>Run backtest</button>
 
       {tickers.map((t, index) => (
         <div key={index}>
@@ -75,15 +76,17 @@ function App() {
 }
 
 async function runBacktest() {
+  const allocations = {};
+  for (const t of tickers) {
+    allocations[t.symbol] = Number(t.allocation);
+  }
+
   const response = await fetch("http://localhost:4000/api/backtest", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      allocations: tickers.reduce((acc, t) => {
-        acc[t.symbol] = t.allocation;
-        return acc;
-      }, {}),
-      startingAmount: startingAmount,
+      allocations: allocations,
+      startingAmount: Number(startingAmount),
       startDate: startDate,
       endDate: endDate,
     }),
@@ -92,7 +95,5 @@ async function runBacktest() {
   const data = await response.json();
   console.log(data);
 }
-
-<button onClick={runBacktest}>Run backtest</button>
 
 export default App
