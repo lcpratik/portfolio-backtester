@@ -74,4 +74,22 @@ function App() {
   )
 }
 
+async function runBacktest() {
+  const response = await fetch("http://localhost:4000/api/backtest", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      allocations: { VOO: 40, NVDA: 60 },
+      startingAmount: 10000,
+      startDate: "2026-06-01",
+      endDate: "2026-08-14",
+    }),
+  });
+
+  const data = await response.json();
+  console.log(data);
+}
+
+<button onClick={runBacktest}>Run backtest</button>
+
 export default App
