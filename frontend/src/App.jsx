@@ -1,9 +1,16 @@
-function App() {
+import { useState } from 'react'
 
-  const name = "Ryan"
+function App() {
+  const [startingAmount, setStartingAmount] = useState(0);
+
   return (
     <div>
-      Hello {name}
+      <p>Starting amount: {startingAmount}</p>
+      <input
+        type="number"
+        value={startingAmount}
+        onChange={(e) => setStartingAmount(e.target.value)}
+      />
     </div>
   )
 }
