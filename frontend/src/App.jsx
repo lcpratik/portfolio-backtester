@@ -36,6 +36,14 @@ function App() {
         </div>
       ))}
 
+      <button
+        onClick={() => {
+          setTickers([...tickers, { symbol: "", allocation: 0 }]);
+        }}
+      >
+        Add ticker
+      </button>
+
       <div>
         <label>Starting amount</label>
         <input
