@@ -72,7 +72,13 @@ function App() {
         />
       </div>
     </div>
-  )
+
+    {result && (
+  <div>
+    <p>Portfolio total return: {result.portfolio.stats.totalReturnPct}%</p>
+    <p>Benchmark total return: {result.benchmark.stats.totalReturnPct}%</p>
+  </div>
+)}
 }
 
 async function runBacktest() {
@@ -94,6 +100,7 @@ async function runBacktest() {
 
   const data = await response.json();
   console.log(data);
+  setResult(data);
 }
 
 export default App
