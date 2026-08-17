@@ -9,8 +9,12 @@ function App() {
   const [startDate, setStartDate] = useState("2026-06-01");
   const [endDate, setEndDate] = useState("2026-08-14");
   const [result, setResult] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   async function runBacktest() {
+
+    setIsLoading(true);
+
     const allocations = {};
     for (const t of tickers) {
       allocations[t.symbol] = Number(t.allocation);
@@ -30,6 +34,8 @@ function App() {
     const data = await response.json();
     console.log(data);
     setResult(data);
+    setIsLoading(false);
+
   }
 
   return (
@@ -96,6 +102,10 @@ function App() {
           />
         </div>
       </div>
+
+      <button onClick={runBacktest} disabled={isLoading}>
+        {isLoading ? "Running..." : "Run backtest"}
+      </button>
 
       {result && result.error && (
         <p>Something went wrong: {result.error}</p>
