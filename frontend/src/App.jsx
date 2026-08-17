@@ -9,6 +9,29 @@ function App() {
   const [startDate, setStartDate] = useState("2026-06-01");
   const [endDate, setEndDate] = useState("2026-08-14");
   const [result, setResult] = useState(null);
+
+  async function runBacktest() {
+    const allocations = {};
+    for (const t of tickers) {
+      allocations[t.symbol] = Number(t.allocation);
+    }
+
+    const response = await fetch("http://localhost:4000/api/backtest", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        allocations: allocations,
+        startingAmount: Number(startingAmount),
+        startDate: startDate,
+        endDate: endDate,
+      }),
+    });
+
+    const data = await response.json();
+    console.log(data);
+    setResult(data);
+  }
+
   return (
     <>
       <div>
@@ -82,28 +105,6 @@ function App() {
       )}
     </>
   );
-}
-
-async function runBacktest() {
-  const allocations = {};
-  for (const t of tickers) {
-    allocations[t.symbol] = Number(t.allocation);
-  }
-
-  const response = await fetch("http://localhost:4000/api/backtest", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      allocations: allocations,
-      startingAmount: Number(startingAmount),
-      startDate: startDate,
-      endDate: endDate,
-    }),
-  });
-
-  const data = await response.json();
-  console.log(data);
-  setResult(data);
 }
 
 export default App
