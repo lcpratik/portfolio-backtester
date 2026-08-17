@@ -33,6 +33,11 @@ function App() {
 
     const data = await response.json();
     console.log(data);
+    const chartData = result.portfolio.series.map((point, index) => ({
+      date: point.date,
+      portfolioValue: point.value,
+      benchmarkValue: result.benchmark.series[index].value,
+    }));
     setResult(data);
     setIsLoading(false);
 
@@ -112,12 +117,20 @@ function App() {
       )}
 
 
-      {result && !result.error && (
-        <div>
-          <p>Portfolio total return: {result.portfolio.stats.totalReturnPct.toFixed(2)}%</p>
-          <p>Benchmark total return: {result.benchmark.stats.totalReturnPct.toFixed(2)}%</p>
-        </div>
-      )}
+      {result && !result.error && (() => {
+        const chartData = result.portfolio.series.map((point, index) => ({
+          date: point.date,
+          portfolioValue: point.value,
+          benchmarkValue: result.benchmark.series[index].value,
+        }));
+
+        return (
+          <div>
+            <p>Portfolio total return: {result.portfolio.stats.totalReturnPct.toFixed(2)}%</p>
+            {/* chart goes here, using chartData */}
+          </div>
+        );
+      })()}
     </>
   );
 }
