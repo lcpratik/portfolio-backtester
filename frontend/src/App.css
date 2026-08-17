@@ -1,184 +1,194 @@
-.counter {
-  font-size: 16px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: var(--accent);
-  background: var(--accent-bg);
-  border: 2px solid transparent;
-  transition: border-color 0.3s;
-  margin-bottom: 24px;
-
-  &:hover {
-    border-color: var(--accent-border);
-  }
-  &:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
+:root {
+  --black: #0a0a0a;
+  --white: #ffffff;
+  --off: #f6f6f4;
+  --gray: #8c8c8c;
+  --line: #e2e2e0;
+  --up: #0f9d58;
+  --down: #d93025;
+  --accent: #4b5efc; /* portfolio line */
+  --accent-2: #16b3ac; /* benchmark line */
 }
 
-.hero {
-  position: relative;
-
-  .base,
-  .framework,
-  .vite {
-    inset-inline: 0;
-    margin: 0 auto;
-  }
-
-  .base {
-    width: 170px;
-    position: relative;
-    z-index: 0;
-  }
-
-  .framework,
-  .vite {
-    position: absolute;
-  }
-
-  .framework {
-    z-index: 1;
-    top: 34px;
-    height: 28px;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
-      scale(1.4);
-  }
-
-  .vite {
-    z-index: 0;
-    top: 107px;
-    height: 26px;
-    width: auto;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
-      scale(0.8);
-  }
+* {
+  box-sizing: border-box;
 }
 
-#center {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-  place-content: center;
-  place-items: center;
-  flex-grow: 1;
-
-  @media (max-width: 1024px) {
-    padding: 32px 20px 24px;
-    gap: 18px;
-  }
-}
-
-#next-steps {
-  display: flex;
-  border-top: 1px solid var(--border);
-  text-align: left;
-
-  & > div {
-    flex: 1 1 0;
-    padding: 32px;
-    @media (max-width: 1024px) {
-      padding: 24px 20px;
-    }
-  }
-
-  .icon {
-    margin-bottom: 16px;
-    width: 22px;
-    height: 22px;
-  }
-
-  @media (max-width: 1024px) {
-    flex-direction: column;
-    text-align: center;
-  }
-}
-
-#docs {
-  border-right: 1px solid var(--border);
-
-  @media (max-width: 1024px) {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
-}
-
-#next-steps ul {
-  list-style: none;
+html,
+body {
+  margin: 0;
   padding: 0;
-  display: flex;
-  gap: 8px;
-  margin: 32px 0 0;
-
-  .logo {
-    height: 18px;
-  }
-
-  a {
-    color: var(--text-h);
-    font-size: 16px;
-    border-radius: 6px;
-    background: var(--social-bg);
-    display: flex;
-    padding: 6px 12px;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    transition: box-shadow 0.3s;
-
-    &:hover {
-      box-shadow: var(--shadow);
-    }
-    .button-icon {
-      height: 18px;
-      width: 18px;
-    }
-  }
-
-  @media (max-width: 1024px) {
-    margin-top: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
-
-    li {
-      flex: 1 1 calc(50% - 8px);
-    }
-
-    a {
-      width: 100%;
-      justify-content: center;
-      box-sizing: border-box;
-    }
-  }
+  background: var(--white);
+  color: var(--black);
 }
 
-#spacer {
-  height: 88px;
-  border-top: 1px solid var(--border);
-  @media (max-width: 1024px) {
-    height: 48px;
-  }
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
-.ticks {
-  position: relative;
+#root {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 56px 24px 96px;
+}
+
+/* ---------- Heading ---------- */
+
+h1 {
+  font-size: clamp(32px, 5vw, 44px);
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  margin: 0 0 40px;
+  text-align: center;
+}
+
+/* ---------- Buttons ---------- */
+
+button {
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  border-radius: 24px;
+  padding: 13px 24px;
+  transition: opacity 0.15s ease, transform 0.1s ease;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* The primary "Run backtest" button is the first button on the page */
+#root > div > button:first-of-type {
+  display: block;
   width: 100%;
+  background: var(--black);
+  color: var(--white);
+  padding: 16px;
+  font-size: 15px;
+  margin-bottom: 28px;
+}
 
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    top: -4.5px;
-    border: 5px solid transparent;
+/* "Add ticker" and any other secondary buttons */
+button:not(:first-of-type) {
+  background: var(--white);
+  color: var(--black);
+  border: 1.5px solid var(--black);
+  margin: 4px 0 24px;
+}
+
+/* ---------- Ticker rows ---------- */
+
+/* Each ticker row is a div containing exactly two inputs */
+div:has(> input[type="text"]) {
+  display: grid;
+  grid-template-columns: 1fr 100px;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+input[type="text"] {
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* ---------- Form fields (starting amount, dates) ---------- */
+
+div:has(> label) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+}
+
+div:has(> label):last-of-type {
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 32px;
+}
+
+label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gray);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+/* ---------- All inputs ---------- */
+
+input {
+  font-family: inherit;
+  font-size: 15px;
+  color: var(--black);
+  background: var(--off);
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  padding: 11px 14px;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+input:focus {
+  border-color: var(--black);
+}
+
+/* the label-paired inputs (amount/date) can be narrower */
+div:has(> label) input {
+  width: 200px;
+  text-align: right;
+}
+
+/* ---------- Results ---------- */
+
+p {
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+  margin: 6px 0;
+}
+
+p:first-of-type {
+  margin-top: 8px;
+}
+
+/* ---------- Chart ---------- */
+
+.recharts-wrapper {
+  margin: 28px auto 8px;
+}
+
+.recharts-legend-item-text {
+  font-size: 13px !important;
+  font-weight: 600;
+  color: var(--black) !important;
+}
+
+.recharts-cartesian-axis-tick-value {
+  font-size: 11px;
+  fill: var(--gray);
+}
+
+.recharts-tooltip-wrapper {
+  font-size: 13px;
+}
+
+/* ---------- Small screens ---------- */
+
+@media (max-width: 480px) {
+  #root {
+    padding: 40px 16px 64px;
   }
 
-  &::before {
-    left: 0;
-    border-left-color: var(--border);
-  }
-  &::after {
-    right: 0;
-    border-right-color: var(--border);
+  div:has(> label) input {
+    width: 140px;
   }
 }
