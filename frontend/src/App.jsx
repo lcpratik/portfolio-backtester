@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { LineChart, Line, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 
 function App() {
   const [tickers, setTickers] = useState([
