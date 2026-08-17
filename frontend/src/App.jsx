@@ -104,8 +104,8 @@ function App() {
 
       {result && !result.error && (
         <div>
-          <p>Portfolio total return: {result.portfolio.stats.totalReturnPct}%</p>
-          <p>Benchmark total return: {result.benchmark.stats.totalReturnPct}%</p>
+          <p>Portfolio total return: {result.portfolio.stats.totalReturnPct.toFixed(2)}%</p>
+          <p>Benchmark total return: {result.benchmark.stats.totalReturnPct.toFixed(2)}%</p>
         </div>
       )}
     </>
