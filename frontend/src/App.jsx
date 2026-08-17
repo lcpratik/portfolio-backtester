@@ -97,7 +97,11 @@ function App() {
         </div>
       </div>
 
-      {result && (
+      {result && result.error && (
+        <p>Something went wrong: {result.error}</p>
+      )}
+
+      {result && !result.error && (
         <div>
           <p>Portfolio total return: {result.portfolio.stats.totalReturnPct}%</p>
           <p>Benchmark total return: {result.benchmark.stats.totalReturnPct}%</p>
