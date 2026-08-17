@@ -10,75 +10,78 @@ function App() {
   const [endDate, setEndDate] = useState("2026-08-14");
   const [result, setResult] = useState(null);
   return (
-    <div>
-      <h1>Portfolio Backtester</h1>
-      <button onClick={runBacktest}>Run backtest</button>
+    <>
+      <div>
+        <h1>Portfolio Backtester</h1>
+        <button onClick={runBacktest}>Run backtest</button>
 
-      {tickers.map((t, index) => (
-        <div key={index}>
-          <input
-            type="text"
-            value={t.symbol}
-            onChange={(e) => {
-              const updated = [...tickers];
-              updated[index] = { symbol: e.target.value, allocation: t.allocation };
-              setTickers(updated);
-            }}
-          />
+        {tickers.map((t, index) => (
+          <div key={index}>
+            <input
+              type="text"
+              value={t.symbol}
+              onChange={(e) => {
+                const updated = [...tickers];
+                updated[index] = { symbol: e.target.value, allocation: t.allocation };
+                setTickers(updated);
+              }}
+            />
+            <input
+              type="number"
+              value={t.allocation}
+              onChange={(e) => {
+                const updated = [...tickers];
+                updated[index] = { symbol: t.symbol, allocation: e.target.value };
+                setTickers(updated);
+              }}
+            />
+          </div>
+        ))}
+
+        <button
+          onClick={() => {
+            setTickers([...tickers, { symbol: "", allocation: 0 }]);
+          }}
+        >
+          Add ticker
+        </button>
+
+        <div>
+          <label>Starting amount</label>
           <input
             type="number"
-            value={t.allocation}
-            onChange={(e) => {
-              const updated = [...tickers];
-              updated[index] = { symbol: t.symbol, allocation: e.target.value };
-              setTickers(updated);
-            }}
+            value={startingAmount}
+            onChange={(e) => setStartingAmount(e.target.value)}
           />
         </div>
-      ))}
 
-      <button
-        onClick={() => {
-          setTickers([...tickers, { symbol: "", allocation: 0 }]);
-        }}
-      >
-        Add ticker
-      </button>
+        <div>
+          <label>Start date</label>
+          <input
+            type="date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+          />
+        </div>
 
-      <div>
-        <label>Starting amount</label>
-        <input
-          type="number"
-          value={startingAmount}
-          onChange={(e) => setStartingAmount(e.target.value)}
-        />
+        <div>
+          <label>End date</label>
+          <input
+            type="date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+          />
+        </div>
       </div>
 
-      <div>
-        <label>Start date</label>
-        <input
-          type="date"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-        />
-      </div>
-
-      <div>
-        <label>End date</label>
-        <input
-          type="date"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-        />
-      </div>
-    </div>
-
-    {result && (
-  <div>
-    <p>Portfolio total return: {result.portfolio.stats.totalReturnPct}%</p>
-    <p>Benchmark total return: {result.benchmark.stats.totalReturnPct}%</p>
-  </div>
-)}
+      {result && (
+        <div>
+          <p>Portfolio total return: {result.portfolio.stats.totalReturnPct}%</p>
+          <p>Benchmark total return: {result.benchmark.stats.totalReturnPct}%</p>
+        </div>
+      )}
+    </>
+  );
 }
 
 async function runBacktest() {
