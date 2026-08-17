@@ -8,7 +8,7 @@ function App() {
   const [startingAmount, setStartingAmount] = useState(10000);
   const [startDate, setStartDate] = useState("2026-06-01");
   const [endDate, setEndDate] = useState("2026-08-14");
-
+  const [result, setResult] = useState(null);
   return (
     <div>
       <h1>Portfolio Backtester</h1>
